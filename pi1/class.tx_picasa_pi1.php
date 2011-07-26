@@ -193,7 +193,7 @@ class tx_picasa_pi1 extends tslib_pibase
         }
         
         $headerData .= '<script src="' . $jsPath . 'fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript"></script>' . "\n"
-                    .  '<script src="' . $jsPath . 'picasa.js" type="text/javascript"></script>' . "\n";
+                    .  '<script src="' . $jsPath . 'album.js" type="text/javascript"></script>' . "\n";
                     
         $GLOBALS[ 'TSFE' ]->additionalHeaderData[ $this->extKey ] = $headerData;
         
