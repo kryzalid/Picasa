@@ -1,0 +1,13 @@
+
+plugin.tx_picasa_pi1 {
+    
+    jQuery = 1
+    
+    album {
+        
+        thumbnail {
+            maxH = 200
+            maxW = 200
+        }
+    }
+}

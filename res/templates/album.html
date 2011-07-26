@@ -1,0 +1,12 @@
+{namespace p=Tx_Picasa_ViewHelpers}
+
+<div class="tx-picasa-pi1-album">
+    <h2>{album.title.text}</h2>
+    <f:for each="{photos}" as="photo">
+        <div class="tx-picasa-pi1-photo">
+            <f:link.external uri="{photo.mediaGroup.content.0.url}" rel="tx-picasa-pi1-album-photo">
+                <p:image src="{photo.mediaGroup.thumbnail.1.url}" alt="{photo.title.text}" />
+            </f:link.external>
+        </div>
+    </f:for>
+</div>

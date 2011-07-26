@@ -1,0 +1,6 @@
+
+plugin.tx_picasa_pi1 {
+    
+   
+    
+}

@@ -1,0 +1,12 @@
+{namespace p=Tx_Picasa_ViewHelpers}
+
+<div class="tx-picasa-pi1-albums">
+    <f:for each="{albums}" as="album">
+        <div class="tx-picasa-pi1-album">
+            <f:link.page additionalParams="{ tx_picasa_pi1: { album: album.gphotoName.text } }">
+                <p:image src="{album.mediaGroup.content.0}" alt="{album.title.text}" maxWidth="200" maxHeight="200" />
+                <span>{album.title.text}</span>
+            </f:link.page>
+        </div>
+    </f:for>
+</div>
