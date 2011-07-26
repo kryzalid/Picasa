@@ -31,10 +31,32 @@ t3lib_extMgm::addPlugin(
     'list_type'
 );
 
+// Plugin options
+$TCA[ 'tt_content' ][ 'types' ][ 'list' ][ 'subtypes_excludelist' ][ $_EXTKEY . '_pi2' ] = 'layout, select_key, pages, recursive';
+
+// Add flexform field to plugin options
+$TCA[ 'tt_content' ][ 'types' ][ 'list' ][ 'subtypes_addlist' ][ $_EXTKEY . '_pi2' ]     = 'pi_flexform';
+
+// Add flexform DataStructure
+t3lib_extMgm::addPiFlexFormValue(
+    $_EXTKEY . '_pi2',
+    'FILE:EXT:' . $_EXTKEY . '/flex/pi2.xml'
+);
+
+// Add plugin
+t3lib_extMgm::addPlugin(
+    array(
+        'LLL:EXT:picasa/lang/flex_pi2.xml:tt_content.list_type_pi2',
+        $_EXTKEY . '_pi2'
+    ),
+    'list_type'
+);
+
 // Wizard icons
-if( TYPO3_MODE == 'BE' ) {
-    
+if( TYPO3_MODE === 'BE' )
+{
     $TBE_MODULES_EXT[ 'xMOD_db_new_content_el' ][ 'addElClasses' ][ 'tx_picasa_pi1_wizicon' ] = t3lib_extMgm::extPath( $_EXTKEY ) . 'pi1/class.tx_picasa_pi1_wizicon.php';
+    $TBE_MODULES_EXT[ 'xMOD_db_new_content_el' ][ 'addElClasses' ][ 'tx_picasa_pi2_wizicon' ] = t3lib_extMgm::extPath( $_EXTKEY ) . 'pi2/class.tx_picasa_pi2_wizicon.php';
 }
 
 // Static templates

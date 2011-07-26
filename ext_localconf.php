@@ -15,3 +15,11 @@ t3lib_extMgm::addPItoST43(
     'list_type',
     FALSE
 );
+
+t3lib_extMgm::addPItoST43(
+    $_EXTKEY,
+    'pi2/class.tx_picasa_pi2.php',
+    '_pi2',
+    'list_type',
+    FALSE
+);

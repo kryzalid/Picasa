@@ -24,15 +24,15 @@
  ***************************************************************/
 
 /**
- * Source file containing class tx_picasa_pi1.
+ * Source file containing class tx_picasa_pi2.
  * 
  * @package    MyNA
- * @subpackage tx_picasa_pi1
+ * @subpackage tx_picasa_pi2
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
- * @see        tx_picasa_pi1
+ * @see        tx_picasa_pi2
  */
 
 // tslib_pibase
@@ -42,20 +42,20 @@ require_once( PATH_tslib . 'class.tslib_pibase.php' );
 require_once( t3lib_extMgm::extPath( 'api_macmade' ) . 'class.tx_apimacmade.php' );
 
 /**
- * Class tx_picasa_pi1.
+ * Class tx_picasa_pi2.
  * 
- * Description for class tx_picasa_pi1.
- * Adapted from class tx_dropdownsitemap_pi1 from extension "dropdow_sitemap" by
+ * Description for class tx_picasa_pi2.
+ * Adapted from class tx_dropdownsitemap_pi2 from extension "dropdow_sitemap" by
  * Jean-David Gadina <info@eosgarden.com>.
  *
  * @package    MyNA
- * @subpackage tx_picasa_pi1
+ * @subpackage tx_picasa_pi2
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
  */
-class tx_picasa_pi1 extends tslib_pibase
+class tx_picasa_pi2 extends tslib_pibase
 {
     
     /**
@@ -77,7 +77,7 @@ class tx_picasa_pi1 extends tslib_pibase
      *
      * @var string
      */
-    public $scriptRelPath      = 'pi1/class.tx_picasa_pi1.php';
+    public $scriptRelPath      = 'pi2/class.tx_picasa_pi2.php';
     
     /**
      * Configuration
@@ -154,7 +154,7 @@ class tx_picasa_pi1 extends tslib_pibase
             $this->_conf[ 'pass' ]
         );
         
-        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/pi1/templates/';
+        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/templates/';
         
         $this->_view = t3lib_div::makeInstance( 'Tx_Fluid_View_StandaloneView' );
         $this->_view->assign( 'conf', $this->_conf );
@@ -162,7 +162,7 @@ class tx_picasa_pi1 extends tslib_pibase
         switch( TRUE )
         {
             case !empty( $this->piVars[ 'album' ] ):
-                $this->showAlbumAction( $this->piVars[ 'album' ] );
+                $this->showUploadFormAction( $this->piVars[ 'album' ] );
             break;
             
             default:
@@ -182,27 +182,19 @@ class tx_picasa_pi1 extends tslib_pibase
         $this->_view->assign( 'albums', $albums );
     }
     
-    protected function showAlbumAction( $albumName )
+    protected function showUploadFormAction( $albumName )
     {
-        $jsPath     = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
-        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'fancybox/jquery.fancybox-1.3.4.css" type="text/css"charset="utf-8" />' . "\n";
+        $jsPath = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
         
         if( $this->_conf[ 'jQuery' ] )
         {
             $headerData .= '<script src="' . $jsPath . 'jquery-1.6.1.min.js" type="text/javascript"></script>' . "\n";
         }
         
-        $headerData .= '<script src="' . $jsPath . 'fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript"></script>' . "\n"
-                    .  '<script src="' . $jsPath . 'picasa.js" type="text/javascript"></script>' . "\n";
-                    
+        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'albums.html' );
+        $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
+        
         $GLOBALS[ 'TSFE' ]->additionalHeaderData[ $this->extKey ] = $headerData;
-        
-        $album  = $this->_client->getAlbumByName( $albumName );
-        $photos = $this->_client->getAlbumPhotos( $albumName );
-        
-        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'album.html' );
-        $this->_view->assign( 'album', $album );
-        $this->_view->assign( 'photos', $photos );
     }
     
     /**
@@ -343,6 +335,6 @@ class tx_picasa_pi1 extends tslib_pibase
 /**
  * XCLASS inclusion
  */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2.php']);
 }
