@@ -54,7 +54,7 @@ class tx_picasa_pi1_wizicon
     protected static $_extKey = 'picasa';
     
     // Plugin name
-    protected static $_piName = 'picasa';
+    protected static $_piName = 'pi1';
     
     // Language object
     protected static $_lang   = NULL;
@@ -77,7 +77,7 @@ class tx_picasa_pi1_wizicon
             
             // Gets the language labels
             self::$_labels = self::$_lang->includeLLFile(
-                'EXT:' . self::$_extKey . '/locallang.xml',
+                'EXT:' . self::$_extKey . '/locallang_db.xml',
                 FALSE
             );
         }
