@@ -11,3 +11,8 @@ plugin.tx_picasa_pi1 {
         }
     }
 }
+
+plugin.tx_picasa_pi2 {
+    
+    jQuery = 1
+}
