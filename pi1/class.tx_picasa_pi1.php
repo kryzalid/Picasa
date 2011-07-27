@@ -154,7 +154,7 @@ class tx_picasa_pi1 extends tslib_pibase
             $this->_conf[ 'pass' ]
         );
         
-        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/pi1/templates/';
+        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/templates/pi1/';
         
         $this->_view = t3lib_div::makeInstance( 'Tx_Fluid_View_StandaloneView' );
         $this->_view->assign( 'conf', $this->_conf );
