@@ -190,7 +190,7 @@ class tx_picasa_pi2 extends tslib_pibase
     {
         $jsPath = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
         
-        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'plupload/jquery.plupload.queue/jquery.plupload.queue.css" type="text/css" charset="utf-8" />' . "\n";
+        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'plupload/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" charset="utf-8" />' . "\n";
         
         if( $this->_conf[ 'jQuery' ] )
         {
