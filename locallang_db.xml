@@ -9,8 +9,8 @@
             <label index="pi1_title">Picasa - Display albums</label>
             <label index="pi1_plus_wiz_description">Display one or more Picasa albums.</label>
             
-            <label index="pi1_title">Picasa - Upload pictures</label>
-            <label index="pi1_plus_wiz_description">Upload photos to any of your Picasa albums.</label>
+            <label index="pi2_title">Picasa - Upload pictures</label>
+            <label index="pi2_plus_wiz_description">Upload photos to any of your Picasa albums.</label>
         </languageKey>
     </data>
 </T3locallang>
