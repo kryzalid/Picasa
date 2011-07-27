@@ -200,7 +200,7 @@ class tx_picasa_pi2 extends tslib_pibase
         $headerData .= '<script type="text/javascript" src="' . $jsPath . 'plupload/plupload.full.min.js"></script>' . "\n"
                     .  '<script type="text/javascript" src="' . $jsPath . 'plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>';
         
-        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'albums.html' );
+        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'upload.html' );
         $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
         $this->_view->assign( 'jsPath', $jsPath );
         $this->_view->assign( 'url', $this->pi_linkTP_keepPIvars_url( array(
