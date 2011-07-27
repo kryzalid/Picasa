@@ -161,6 +161,10 @@ class tx_picasa_pi2 extends tslib_pibase
         
         switch( TRUE )
         {
+            case !empty( $this->piVars[ 'upload' ] ):
+                $this->handleUpload( $this->piVars[ 'album' ] );
+            break;
+            
             case !empty( $this->piVars[ 'album' ] ):
                 $this->showUploadFormAction( $this->piVars[ 'album' ] );
             break;
@@ -186,15 +190,30 @@ class tx_picasa_pi2 extends tslib_pibase
     {
         $jsPath = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
         
+        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'plupload/jquery.plupload.queue/jquery.plupload.queue.css" type="text/css" charset="utf-8" />' . "\n";
+        
         if( $this->_conf[ 'jQuery' ] )
         {
             $headerData .= '<script src="' . $jsPath . 'jquery-1.6.1.min.js" type="text/javascript"></script>' . "\n";
         }
         
+        $headerData .= '<script type="text/javascript" src="' . $jsPath . 'plupload/plupload.full.min.js"></script>' . "\n"
+                    .  '<script type="text/javascript" src="' . $jsPath . 'plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>';
+        
         $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'albums.html' );
         $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
+        $this->_view->assign( 'jsPath', $jsPath );
+        $this->_view->assign( 'url', $this->pi_linkTP_keepPIvars_url( array(
+            'album'  => $albumName,
+            'upload' => '1'
+        ) ) );
         
         $GLOBALS[ 'TSFE' ]->additionalHeaderData[ $this->extKey ] = $headerData;
+    }
+    
+    protected function handleUpload( $albumName )
+    {
+        // TODO: Implement
     }
     
     /**
