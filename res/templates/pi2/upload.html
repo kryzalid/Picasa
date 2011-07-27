@@ -52,40 +52,41 @@
                 // Silverlight settings
                 silverlight_xap_url : $form.attr( 'data-plupload-silverlight_xap_url-url' ) // '/plupload/js/plupload.silverlight.xap'
             }
-        } );
-        
-        var uploader = $uploader.pluploadQueue( settings );
-        
-        function formSubmitted( e )
-        {
-            // Validate number of uploaded files
-            if( uploader.total.uploaded == 0 )
+            
+            var uploader = $uploader.pluploadQueue( settings );
+            
+            function formSubmitted( e )
             {
-                // Files in queue upload them first
-                if( uploader.files.length > 0 )
+                // Validate number of uploaded files
+                if( uploader.total.uploaded == 0 )
                 {
-                    // When all files are uploaded submit form
-                    uploader.bind( 'UploadProgress', function()
+                    // Files in queue upload them first
+                    if( uploader.files.length > 0 )
                     {
-                        if( uploader.total.uploaded == uploader.files.length )
+                        // When all files are uploaded submit form
+                        uploader.bind( 'UploadProgress', function()
                         {
-                            $form.submit();
-                        }
-                    } );
+                            if( uploader.total.uploaded == uploader.files.length )
+                            {
+                                $form.submit();
+                            }
+                        } );
+                        
+                        uploader.start();
+                    }
+                    else
+                    {
+                        alert( 'You must at least upload one file.' );
+                    }
                     
-                    uploader.start();
+                    e.preventDefault();
                 }
-                else
-                {
-                    alert( 'You must at least upload one file.' );
-                }
-                
-                e.preventDefault();
             }
-        }
-        
-        // Client side form validation
-        $form.submit( formSubmitted );
+            
+            // Client side form validation
+            $form.submit( formSubmitted );
+            
+        } );
         
     } )( jQuery );
     
