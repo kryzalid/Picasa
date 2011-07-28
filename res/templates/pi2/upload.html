@@ -1,17 +1,33 @@
 
-<h2>Upload pictures to '{album.title.text}'</h2>
+<h2>Ajouter des images à '{album.title.text}'</h2>
+<ul>
+    <li>
+        Cliquez sur 'Add files'
+    </li>
+    <li>
+        Choisissez une ou plusieurs images présentes sur votre ordinateur
+    </li>
+    <li>
+        Cliquez sur 'Start upload'
+    </li>
+    <li>
+        Une fois le téléchargement terminé, cliquez sur 'Terminer'
+    </li>
+</ul>
+<br />
 <form id="tx-picasa-pi2-form"
       action="{url}"
       method="post"
       enctype="multipart/form-data"
+      data-plupload-url="{uploadUrl}"
       data-plupload-flash-url="{jsPath}plupload/plupload.flash.swf"
       data-plupload-silverlight-url="{jsPath}plupload/plupload.silverlight.xap">
       
     <div id="tx-picasa-pi2-uploader">
-        <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+        <p>Votre navigateur ne supporte pas Flash, Silverlight, Gears, BrowserPlus ou HTML5.</p>
     </div>
     
-    <input type="submit" value="Upload" />
+    <input type="submit" value="Terminer" />
     
 </form>
 
@@ -29,7 +45,7 @@
             var settings  = {
                 // General settings
                 runtimes      : 'html5,flash,silverlight',
-                url           : $form.attr( 'action' ),
+                url           : $form.attr( 'data-plupload-url' ),
                 max_file_size : '10mb',
                 chunk_size    : '1mb',
                 unique_names  : true,
@@ -50,11 +66,11 @@
                 ],
                 
                 // Flash settings
-                flash_swf_url : $form.attr( 'data-plupload-flash-url' ), // '/plupload/js/plupload.flash.swf',
+                flash_swf_url : $form.attr( 'data-plupload-flash-url' ),
                 
                 // Silverlight settings
-                silverlight_xap_url : $form.attr( 'data-plupload-silverlight_xap_url-url' ) // '/plupload/js/plupload.silverlight.xap'
-            }
+                silverlight_xap_url : $form.attr( 'data-plupload-silverlight_xap_url-url' )
+            };
             
             var uploader = $uploader.pluploadQueue( settings );
             

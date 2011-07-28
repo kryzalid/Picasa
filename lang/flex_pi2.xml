@@ -10,6 +10,7 @@
             <label index="tt_content.flexform_pi2.sDEF">Settings</label>
             <label index="tt_content.flexform_pi2.sDEF.user">Username</label>
             <label index="tt_content.flexform_pi2.sDEF.pass">Password</label>
+            <label index="tt_content.flexform_pi2.sDEF.listPage">Page on which the albums are displayed (tx_picasa_pi1)</label>
         </languageKey>
     </data>
 </T3locallang>

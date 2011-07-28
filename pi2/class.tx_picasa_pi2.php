@@ -148,6 +148,9 @@ class tx_picasa_pi2 extends tslib_pibase
         // Initialize the plugin.
         $this->_initialize( $content, $conf );
         
+        $this->extPath = t3lib_extMgm::extRelPath( $this->extKey );
+        $this->extPath = str_replace( '../', '/', $this->extPath );
+        
         $this->_client = t3lib_div::makeInstance(
             'Tx_Picasa_Client',
             $this->_conf[ 'user' ],
@@ -161,7 +164,7 @@ class tx_picasa_pi2 extends tslib_pibase
         
         switch( TRUE )
         {
-            case !empty( $this->piVars[ 'upload' ] ):
+            case !empty( $_POST ):
                 $this->handleUpload( $this->piVars[ 'album' ] );
             break;
             
@@ -188,7 +191,7 @@ class tx_picasa_pi2 extends tslib_pibase
     
     protected function showUploadFormAction( $albumName )
     {
-        $jsPath = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
+        $jsPath = $this->extPath . 'res/js/';
         
         $headerData = '<link rel="stylesheet" href="' . $jsPath . 'plupload/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" charset="utf-8" />' . "\n";
         
@@ -203,6 +206,7 @@ class tx_picasa_pi2 extends tslib_pibase
         $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'upload.html' );
         $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
         $this->_view->assign( 'jsPath', $jsPath );
+        $this->_view->assign( 'uploadUrl', $this->extPath . 'scripts/upload.php' );
         $this->_view->assign( 'url', $this->pi_linkTP_keepPIvars_url( array(
             'album'  => $albumName,
             'upload' => '1'
@@ -213,7 +217,33 @@ class tx_picasa_pi2 extends tslib_pibase
     
     protected function handleUpload( $albumName )
     {
-        // TODO: Implement
+        $count    = ( int )$_POST[ 'tx-picasa-pi2-uploader_count' ];
+        $pictures = array();
+        
+        for( $i = 0; $i < $count; $i++ )
+        {
+            $prefix = 'tx-picasa-pi2-uploader_' . $i . '_';
+            
+            if( $_POST[ $prefix . 'status' ] === 'done' )
+            {
+                $pictures[] = $picture = 'typo3temp/tx_picasa/tmp/' . $_POST[ $prefix . 'tmpname' ];
+                
+                $this->_client->postPhotoToAlbum(
+                    $_POST[ $prefix . 'name' ],
+                    t3lib_div::getFileAbsFileName( $picture ),
+                    $albumName
+                );
+            }
+        }
+        
+        $this->showUploadedPictures( $albumName, $pictures );
+    }
+    
+    protected function showUploadedPictures( $albumName, array $pictures )
+    {
+        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'uploaded.html' );
+        $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
+        $this->_view->assign( 'pictures', $pictures );
     }
     
     /**
@@ -273,8 +303,9 @@ class tx_picasa_pi2 extends tslib_pibase
     {
         // Mapping array.
         $flex2conf = array(
-            'user'  => 'sDEF:user',
-            'pass'  => 'sDEF:pass'
+            'user'     => 'sDEF:user',
+            'pass'     => 'sDEF:pass',
+            'listPage' => 'sDEF:listPage'
         );
         
         // Merge them.

@@ -1,7 +1,7 @@
 {namespace p=Tx_Picasa_ViewHelpers}
 
 <div class="tx-picasa-pi2-albums">
-    <h2>Choose an album to upload pictures to:</h2>
+    <h2>Choisissez un album auquel vous souhaitez ajouter des images</h2>
     <f:for each="{albums}" as="album">
         <div class="tx-picasa-pi2-album">
             <f:link.page additionalParams="{ tx_picasa_pi2: { album: album.gphotoName.text } }">
