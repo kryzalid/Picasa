@@ -24,15 +24,15 @@
  ***************************************************************/
 
 /**
- * Source file containing class tx_picasa_pi1.
+ * Source file containing class tx_picasa_pi2.
  * 
  * @package    MyNA
- * @subpackage tx_picasa_pi1
+ * @subpackage tx_picasa_pi2
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
- * @see        tx_picasa_pi1
+ * @see        tx_picasa_pi2
  */
 
 // tslib_pibase
@@ -42,20 +42,20 @@ require_once( PATH_tslib . 'class.tslib_pibase.php' );
 require_once( t3lib_extMgm::extPath( 'api_macmade' ) . 'class.tx_apimacmade.php' );
 
 /**
- * Class tx_picasa_pi1.
+ * Class tx_picasa_pi2.
  * 
- * Description for class tx_picasa_pi1.
- * Adapted from class tx_dropdownsitemap_pi1 from extension "dropdow_sitemap" by
+ * Description for class tx_picasa_pi2.
+ * Adapted from class tx_dropdownsitemap_pi2 from extension "dropdow_sitemap" by
  * Jean-David Gadina <info@eosgarden.com>.
  *
  * @package    MyNA
- * @subpackage tx_picasa_pi1
+ * @subpackage tx_picasa_pi2
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
  */
-class tx_picasa_pi1 extends tslib_pibase
+class tx_picasa_pi2 extends tslib_pibase
 {
     
     /**
@@ -77,7 +77,7 @@ class tx_picasa_pi1 extends tslib_pibase
      *
      * @var string
      */
-    public $scriptRelPath      = 'pi1/class.tx_picasa_pi1.php';
+    public $scriptRelPath      = 'pi2/class.tx_picasa_pi2.php';
     
     /**
      * Configuration
@@ -148,21 +148,28 @@ class tx_picasa_pi1 extends tslib_pibase
         // Initialize the plugin.
         $this->_initialize( $content, $conf );
         
+        $this->extPath = t3lib_extMgm::extRelPath( $this->extKey );
+        $this->extPath = str_replace( '../', '/', $this->extPath );
+        
         $this->_client = t3lib_div::makeInstance(
             'Tx_Picasa_Client',
             $this->_conf[ 'user' ],
             $this->_conf[ 'pass' ]
         );
         
-        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/templates/pi1/';
+        $this->_templatesPath = t3lib_extMgm::extPath( $this->extKey ) . 'res/templates/pi2/';
         
         $this->_view = t3lib_div::makeInstance( 'Tx_Fluid_View_StandaloneView' );
         $this->_view->assign( 'conf', $this->_conf );
         
         switch( TRUE )
         {
+            case !empty( $_POST ):
+                $this->handleUpload( $this->piVars[ 'album' ] );
+            break;
+            
             case !empty( $this->piVars[ 'album' ] ):
-                $this->showAlbumAction( $this->piVars[ 'album' ] );
+                $this->showUploadFormAction( $this->piVars[ 'album' ] );
             break;
             
             default:
@@ -182,27 +189,61 @@ class tx_picasa_pi1 extends tslib_pibase
         $this->_view->assign( 'albums', $albums );
     }
     
-    protected function showAlbumAction( $albumName )
+    protected function showUploadFormAction( $albumName )
     {
-        $jsPath     = t3lib_extMgm::extRelPath( $this->extKey ) . 'res/js/';
-        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'fancybox/jquery.fancybox-1.3.4.css" type="text/css"charset="utf-8" />' . "\n";
+        $jsPath = $this->extPath . 'res/js/';
+        
+        $headerData = '<link rel="stylesheet" href="' . $jsPath . 'plupload/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" charset="utf-8" />' . "\n";
         
         if( $this->_conf[ 'jQuery' ] )
         {
             $headerData .= '<script src="' . $jsPath . 'jquery-1.6.1.min.js" type="text/javascript"></script>' . "\n";
         }
         
-        $headerData .= '<script src="' . $jsPath . 'fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript"></script>' . "\n"
-                    .  '<script src="' . $jsPath . 'album.js" type="text/javascript"></script>' . "\n";
-                    
+        $headerData .= '<script type="text/javascript" src="' . $jsPath . 'plupload/plupload.full.js"></script>' . "\n"
+                    .  '<script type="text/javascript" src="' . $jsPath . 'plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>';
+        
+        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'upload.html' );
+        $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
+        $this->_view->assign( 'jsPath', $jsPath );
+        $this->_view->assign( 'uploadUrl', $this->extPath . 'scripts/upload.php' );
+        $this->_view->assign( 'url', $this->pi_linkTP_keepPIvars_url( array(
+            'album'  => $albumName,
+            'upload' => '1'
+        ) ) );
+        
         $GLOBALS[ 'TSFE' ]->additionalHeaderData[ $this->extKey ] = $headerData;
+    }
+    
+    protected function handleUpload( $albumName )
+    {
+        $count    = ( int )$_POST[ 'tx-picasa-pi2-uploader_count' ];
+        $pictures = array();
         
-        $album  = $this->_client->getAlbumByName( $albumName );
-        $photos = $this->_client->getAlbumPhotos( $albumName );
+        for( $i = 0; $i < $count; $i++ )
+        {
+            $prefix = 'tx-picasa-pi2-uploader_' . $i . '_';
+            
+            if( $_POST[ $prefix . 'status' ] === 'done' )
+            {
+                $pictures[] = $picture = 'typo3temp/tx_picasa/tmp/' . $_POST[ $prefix . 'tmpname' ];
+                
+                $this->_client->postPhotoToAlbum(
+                    $_POST[ $prefix . 'name' ],
+                    t3lib_div::getFileAbsFileName( $picture ),
+                    $albumName
+                );
+            }
+        }
         
-        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'album.html' );
-        $this->_view->assign( 'album', $album );
-        $this->_view->assign( 'photos', $photos );
+        $this->showUploadedPictures( $albumName, $pictures );
+    }
+    
+    protected function showUploadedPictures( $albumName, array $pictures )
+    {
+        $this->_view->setTemplatePathAndFilename( $this->_templatesPath . 'uploaded.html' );
+        $this->_view->assign( 'album', $this->_client->getAlbumByName( $album ) );
+        $this->_view->assign( 'pictures', $pictures );
     }
     
     /**
@@ -262,8 +303,9 @@ class tx_picasa_pi1 extends tslib_pibase
     {
         // Mapping array.
         $flex2conf = array(
-            'user'  => 'sDEF:user',
-            'pass'  => 'sDEF:pass'
+            'user'     => 'sDEF:user',
+            'pass'     => 'sDEF:pass',
+            'listPage' => 'sDEF:listPage'
         );
         
         // Merge them.
@@ -343,6 +385,6 @@ class tx_picasa_pi1 extends tslib_pibase
 /**
  * XCLASS inclusion
  */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2.php']);
 }

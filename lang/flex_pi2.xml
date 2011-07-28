@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for flexform 'tx_picasa_pi2'</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tt_content.list_type_pi2">Picasa</label>
+            <label index="tt_content.flexform_pi2.sDEF">Settings</label>
+            <label index="tt_content.flexform_pi2.sDEF.user">Username</label>
+            <label index="tt_content.flexform_pi2.sDEF.pass">Password</label>
+            <label index="tt_content.flexform_pi2.sDEF.listPage">Page on which the albums are displayed (tx_picasa_pi1)</label>
+        </languageKey>
+    </data>
+</T3locallang>

@@ -24,37 +24,37 @@
  ***************************************************************/
 
 /**
- * Source file containing class tx_picasa_pi1_wizicon.
+ * Source file containing class tx_picasa_pi2_wizicon.
  * 
  * @package    MyNA
- * @subpackage tx_picasa_pi1_wizicon
+ * @subpackage tx_picasa_pi2_wizicon
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
- * @see        tx_picasa_pi1_wizicon
+ * @see        tx_picasa_pi2_wizicon
  */
  
 /**
- * Class tx_picasa_pi1_wizicon.
+ * Class tx_picasa_pi2_wizicon.
  * 
  * Taken from the "dropdown_sitemap" extension by Jean-David Gadina <info@eosgarden.com>.
  *
  * @package    MyNA
- * @subpackage tx_picasa_pi1_wizicon
+ * @subpackage tx_picasa_pi2_wizicon
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2
  * @author     Jean-David Gadina <info@eosgarden.com>
  * @author     Romain Ruetschi <romain.ruetschi@gmail.com>
  * @version    0.1
  */
-class tx_picasa_pi1_wizicon
+class tx_picasa_pi2_wizicon
 {
 
     // Extension key
     protected static $_extKey = 'picasa';
     
     // Plugin name
-    protected static $_piName = 'pi1';
+    protected static $_piName = 'pi2';
     
     // Language object
     protected static $_lang   = NULL;
@@ -103,19 +103,19 @@ class tx_picasa_pi1_wizicon
     public function proc( array $wizardItems )
     {
         // Wizard item
-        $wizardItems[ 'plugins_' . self::$_piName . '_pi1' ] = array(
+        $wizardItems[ 'plugins_' . self::$_piName . '_pi2' ] = array(
             
             // Icon
-            'icon'        => t3lib_extMgm::extRelPath( self::$_extKey ) . 'pi1/ce_wiz.gif',
+            'icon'        => t3lib_extMgm::extRelPath( self::$_extKey ) . 'pi2/ce_wiz.gif',
             
             // Title
-            'title'       => $this->_getLabel( 'pi1_title' ),
+            'title'       => $this->_getLabel( 'pi2_title' ),
             
             // Description
-            'description' => $this->_getLabel( 'pi1_plus_wiz_description' ),
+            'description' => $this->_getLabel( 'pi2_plus_wiz_description' ),
             
             // Parameters
-            'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=' . self::$_extKey . '_pi1'
+            'params'      => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=' . self::$_extKey . '_pi2'
         );
         
         // Returns the wizard items
@@ -128,6 +128,6 @@ class tx_picasa_pi1_wizicon
 /**
  * XCLASS inclusion
  */
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1_wizicon.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi1/class.tx_picasa_pi1_wizicon.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2_wizicon.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/picasa/pi2/class.tx_picasa_pi2_wizicon.php']);
 }

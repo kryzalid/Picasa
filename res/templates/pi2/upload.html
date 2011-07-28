@@ -1,0 +1,113 @@
+
+<h2>Ajouter des images à '{album.title.text}'</h2>
+<ul>
+    <li>
+        Cliquez sur 'Add files'
+    </li>
+    <li>
+        Choisissez une ou plusieurs images présentes sur votre ordinateur
+    </li>
+    <li>
+        Cliquez sur 'Start upload'
+    </li>
+    <li>
+        Une fois le téléchargement terminé, cliquez sur 'Terminer'
+    </li>
+</ul>
+<br />
+<form id="tx-picasa-pi2-form"
+      action="{url}"
+      method="post"
+      enctype="multipart/form-data"
+      data-plupload-url="{uploadUrl}"
+      data-plupload-flash-url="{jsPath}plupload/plupload.flash.swf"
+      data-plupload-silverlight-url="{jsPath}plupload/plupload.silverlight.xap">
+      
+    <div id="tx-picasa-pi2-uploader">
+        <p>Votre navigateur ne supporte pas Flash, Silverlight, Gears, BrowserPlus ou HTML5.</p>
+    </div>
+    
+    <input type="submit" value="Terminer" />
+    
+</form>
+
+<script type="text/javascript" charset="utf-8">
+// <![CDATA[
+    
+    ( function( $ )
+    {
+        
+        $( function()
+        {
+            var $uploader = $( '#tx-picasa-pi2-uploader' ),
+                $form     = $( '#tx-picasa-pi2-form' );
+                
+            var settings  = {
+                // General settings
+                runtimes      : 'html5,flash,silverlight',
+                url           : $form.attr( 'data-plupload-url' ),
+                max_file_size : '10mb',
+                chunk_size    : '1mb',
+                unique_names  : true,
+                
+                // Resize images on clientside if we can
+                resize : {
+                    width   : 800,
+                    height  : 600,
+                    quality : 90
+                },
+                
+                // Specify what files to browse for
+                filters : [
+                    {
+                        title      : 'Image files',
+                        extensions : 'jpg,gif,png'
+                    },
+                ],
+                
+                // Flash settings
+                flash_swf_url : $form.attr( 'data-plupload-flash-url' ),
+                
+                // Silverlight settings
+                silverlight_xap_url : $form.attr( 'data-plupload-silverlight_xap_url-url' )
+            };
+            
+            var uploader = $uploader.pluploadQueue( settings );
+            
+            function formSubmitted( e )
+            {
+                // Validate number of uploaded files
+                if( uploader.total.uploaded == 0 )
+                {
+                    // Files in queue upload them first
+                    if( uploader.files.length > 0 )
+                    {
+                        // When all files are uploaded submit form
+                        uploader.bind( 'UploadProgress', function()
+                        {
+                            if( uploader.total.uploaded == uploader.files.length )
+                            {
+                                $form[ 0 ].submit();
+                            }
+                        } );
+                        
+                        uploader.start();
+                    }
+                    else
+                    {
+                        alert( 'You must at least upload one file.' );
+                    }
+                    
+                    e.preventDefault();
+                }
+            }
+            
+            // Client side form validation
+            $form.submit( formSubmitted );
+            
+        } );
+        
+    } )( jQuery );
+    
+// ]]>
+</script>

@@ -64,13 +64,10 @@ class tx_picasa_Client
         
         if( $pass )
         {
-            $serviceName = Zend_Gdata_Photos::AUTH_SERVICE_NAME;
-            $user        = $user;
-            $pass        = $pass;
-            
-            $client      = Zend_Gdata_ClientLogin::getHttpClient( $user, $pass, $serviceName );
+            $client = Zend_Gdata_ClientLogin::getHttpClient( $user, $pass, Zend_Gdata_Photos::AUTH_SERVICE_NAME );
         }
         
+        $this->user  = $user;
         $this->gData = new Zend_Gdata_Photos( $client, 'Kryzalid-TxPicasa-1.0' );
     }
     
@@ -85,7 +82,7 @@ class tx_picasa_Client
         
         foreach( $albums as $album )
         {
-            if( $album->getGphotoName()->getText() !== $albumName )
+            if( $album->getGphotoName()->getText() === $albumName )
             {
                 return $album;
             }
@@ -103,6 +100,32 @@ class tx_picasa_Client
         $query->setAlbumId( $album->getGphotoId() );
         
         return $this->gData->getAlbumFeed( $query );
+    }
+    
+    public function postPhotoToAlbum( $photoName, $photoPath, $albumName )
+    {
+        $types = array(
+            'jpeg' => 'image/jpeg',
+            'jpg'  => 'image/jpeg',
+            'gif'  => 'image/jpeg',
+            'png'  => 'image/png',
+        );
+        
+        $source    = $this->gData->newMediaFileSource( $photoPath );
+        $extension = strtolower( pathinfo( $photoPath, PATHINFO_EXTENSION ) );
+        
+        $source->setContentType( $types[ $extension ] );
+        
+        $photoEntry = $this->gData->newPhotoEntry();
+        
+        $photoEntry->setMediaSource( $source );
+        $photoEntry->setTitle( $this->gData->newTitle( $photoName ) );
+        
+        $albumQuery = $this->gData->newAlbumQuery();
+        $albumQuery->setUser( $this->user );
+        $albumQuery->setAlbumName( $albumName );
+        
+        return $this->gData->insertPhotoEntry( $photoEntry, $albumQuery->getQueryUrl() );
     }
     
 }

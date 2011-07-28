@@ -1,0 +1,18 @@
+
+<h2>
+    Les photos suivantes ont bien été ajoutées à l'album '{album.title.text}'
+</h2>
+
+<div class="tx-picasa-pi2-photos">
+<f:for each="{pictures}" as="picture">
+    <div class="tx-picasa-pi2-photo">
+        <f:image src="{picture}" alt="" maxWidth="200" maxHeight="200" />
+    </div>
+</f:for>
+</div>
+
+<f:if condition="{conf.listPage}">
+    <div class="tx-picasa-pi2-gotoalbum">
+        <f:link.page pageUid="{conf.listPage}" additionalParams="{ tx_picasa_pi1: { album: album.gphotoName.text } }">Aller à l'album</f:link.page>
+    </div>
+</f:if>
